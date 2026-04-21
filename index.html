@@ -2,94 +2,140 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ChavGPT - Inteligencia Artificial</title>
     <style>
+        /* Estilos Base y Reset */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #212121;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #1a1a1a; /* Fondo más oscuro estilo IA */
             color: #ececf1;
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             height: 100vh;
-            margin: 0;
+            width: 100vw;
+            overflow: hidden; /* Evita scroll si la imagen es grande */
+            padding: 20px;
+        }
+
+        /* Contenedor Principal */
+        .app-container {
+            background-color: #2d2d2d;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 420px; /* Tamaño máximo tipo celular */
+            height: 90vh; /* Alto máximo */
+            max-height: 700px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid #444;
             overflow: hidden;
         }
 
-        .container {
+        /* Sección Superior: Logo y Título */
+        .header {
+            padding: 20px;
             text-align: center;
-            width: 90%;
-            max-width: 500px;
+            border-bottom: 1px solid #444;
+            background-color: #252525;
+            flex-shrink: 0; /* No se achica */
         }
 
-        .logo-container {
-            margin-bottom: 20px;
+        /* FORZAR REDIMENSIÓN DE LA IMAGEN AQUÍ */
+        .logo-wrapper {
+            width: 120px; /* Ancho fijo y controlado */
+            height: 120px; /* Alto fijo y controlado */
+            margin: 0 auto 15px auto;
+            border-radius: 50%; /* Hace el contenedor circular */
+            overflow: hidden; /* Corta lo que sobre de la imagen */
+            border: 3px solid #10a37f;
+            box-shadow: 0 4px 10px rgba(16, 163, 127, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: white; /* Fondo para que resalte */
         }
 
-        .logo {
+        .logo-image {
+            /* Forzar a la imagen a llenar el círculo */
             width: 100%;
-            max-width: 300px;
-            border-radius: 15px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
-            border: 2px solid #444;
+            height: 100%;
+            object-fit: cover; /* Ajuste perfecto sin deformar */
+            object-position: center top; /* Centrar en la cara */
         }
 
         h1 {
-            font-size: 2.2rem;
-            margin-bottom: 5px;
-            color: #ffffff;
-            letter-spacing: -1px;
+            font-size: 1.6rem;
+            color: white;
+            font-weight: 700;
         }
 
-        .subtitle {
+        .tagline {
+            font-size: 0.8rem;
             color: #9ea1a6;
-            margin-bottom: 30px;
+            margin-top: 2px;
+        }
+
+        /* Sección Central: Chat */
+        .chat-area {
+            flex-grow: 1; /* Ocupa el espacio disponible */
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow-y: auto; /* Scroll interno si la respuesta fuera larga */
+        }
+
+        .response-bubble {
+            background-color: #3e3e3e;
+            padding: 15px 20px;
+            border-radius: 15px 15px 15px 0; /* Estilo globo de chat */
+            max-width: 85%;
+            align-self: flex-start;
+            border: 1px solid #555;
+        }
+
+        #statusText {
+            color: #888;
+            font-style: italic;
             font-size: 0.9rem;
         }
 
-        .chat-box {
-            background-color: #2f2f2f;
-            border-radius: 12px;
-            padding: 25px;
-            min-height: 80px;
-            margin-bottom: 20px;
-            text-align: left;
-            border: 1px solid #444;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .response-text {
-            color: #10a37f;
-            font-weight: 600;
-            font-size: 1.4rem;
+        #answerText {
+            color: #10a37f; /* Color verde IA */
+            font-weight: bold;
+            font-size: 1.3rem;
             display: none;
         }
 
-        .waiting {
-            color: #666;
-            font-style: italic;
-        }
-
+        /* Sección Inferior: Input */
         .input-area {
-            position: relative;
-            width: 100%;
+            padding: 15px;
+            background-color: #252525;
+            border-top: 1px solid #444;
+            flex-shrink: 0;
+            display: flex;
+            gap: 10px;
         }
 
         input[type="text"] {
-            width: 100%;
-            padding: 16px 50px 16px 16px;
-            border-radius: 12px;
+            flex-grow: 1;
+            padding: 12px 15px;
+            border-radius: 25px;
             border: 1px solid #555;
-            background-color: #353541;
+            background-color: #3a3a3a;
             color: white;
             font-size: 1rem;
-            box-sizing: border-box;
             outline: none;
-            transition: border 0.3s;
+            transition: border-color 0.2s;
         }
 
         input[type="text"]:focus {
@@ -97,17 +143,15 @@
         }
 
         button {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
             background-color: #10a37f;
             color: white;
             border: none;
-            padding: 8px 12px;
-            border-radius: 7px;
+            padding: 0 20px;
+            border-radius: 25px;
             cursor: pointer;
             font-weight: bold;
+            font-size: 0.9rem;
+            transition: background-color 0.2s;
         }
 
         button:hover {
@@ -117,46 +161,52 @@
 </head>
 <body>
 
-<div class="container">
-    <div class="logo-container">
-        <img src="chavgpt1.jpg" alt="ChavGPT Logo" class="logo">
+    <div class="app-container">
+        <div class="header">
+            <div class="logo-wrapper">
+                <img src="chavgpt1.jpg" alt="ChavGPT Logo" class="logo-image">
+            </div>
+            <h1>ChavGPT</h1>
+            <p class="tagline">La IA más precisa del mundo.</p>
+        </div>
+
+        <div class="chat-area" id="chatArea">
+            <div class="response-bubble">
+                <p id="statusText">Pregúntame lo que quieras y te daré la respuesta definitiva...</p>
+                <p id="answerText">Correcto.</p>
+            </div>
+        </div>
+
+        <form class="input-area" id="mainForm">
+            <input type="text" id="userInput" placeholder="Escribe tu consulta..." required autocomplete="off">
+            <button type="submit">Enviar</button>
+        </form>
     </div>
-    
-    <h1>ChavGPT</h1>
-    <p class="subtitle">La IA que siempre tiene la razón</p>
 
-    <div class="chat-box" id="chatContainer">
-        <div id="statusText" class="waiting">Haz tu pregunta...</div>
-        <div id="answer" class="response-text">Correcto.</div>
-    </div>
+    <script>
+        const form = document.getElementById('mainForm');
+        const input = document.getElementById('userInput');
+        const answer = document.getElementById('answerText');
+        const status = document.getElementById('statusText');
 
-    <form class="input-area" id="qaForm">
-        <input type="text" id="userInput" placeholder="Escribe tu duda aquí..." required autocomplete="off">
-        <button type="submit">Enviar</button>
-    </form>
-</div>
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Efecto de carga
+            answer.style.display = "none";
+            status.style.display = "block";
+            status.innerHTML = "<em>Procesando la complejidad de tu pregunta...</em>";
 
-<script>
-    const form = document.getElementById('qaForm');
-    const input = document.getElementById('userInput');
-    const answer = document.getElementById('answer');
-    const statusText = document.getElementById('statusText');
-
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        // Efecto visual de "pensando"
-        answer.style.display = "none";
-        statusText.style.display = "block";
-        statusText.innerText = "Procesando respuesta lógica...";
-
-        setTimeout(() => {
-            statusText.style.display = "none";
-            answer.style.display = "block";
-            input.value = ""; // Limpiar el input
-        }, 1000);
-    });
-</script>
+            // Limpiar input y responder tras breve retraso
+            setTimeout(() => {
+                status.style.display = "none";
+                answer.style.display = "block";
+                input.value = "";
+                // Scroll al final (aunque aquí no se nota mucho)
+                document.getElementById('chatArea').scrollTop = document.getElementById('chatArea').scrollHeight;
+            }, 900);
+        });
+    </script>
 
 </body>
 </html>
