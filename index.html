@@ -18,7 +18,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100dvh; /* Usa dynamic viewport height para móviles */
+            height: 100dvh;
             width: 100vw;
             overflow: hidden;
         }
@@ -27,7 +27,7 @@
             background-color: #2d2d2d;
             width: 100%;
             max-width: 450px;
-            height: 100%; /* Ocupa todo el alto en móvil */
+            height: 100%;
             display: flex;
             flex-direction: column;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
@@ -46,7 +46,7 @@
             width: 140px;
             height: 140px;
             margin: 0 auto 10px auto;
-            border-radius: 15px; /* Cuadrado redondeado para que se lea el texto de la imagen */
+            border-radius: 15px;
             overflow: hidden;
             border: 2px solid #10a37f;
             background-color: white;
@@ -55,49 +55,61 @@
         .logo-image {
             width: 100%;
             height: 100%;
-            object-fit: contain; /* Para que no se corte el texto "ChavGPT Correcto" */
+            object-fit: contain;
         }
 
         h1 { font-size: 1.5rem; color: white; }
         .tagline { font-size: 0.8rem; color: #9ea1a6; }
 
-        /* Área de Chat - Autoajustable */
+        /* Área de Chat */
         .chat-area {
-            flex: 1; /* Esto hace que ocupe TODO el espacio sobrante */
+            flex: 1;
             padding: 20px;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
+            justify-content: center; /* Centra el mensaje de bienvenida */
             overflow-y: auto;
         }
 
-        .response-bubble {
-            background-color: #3e3e3e;
-            padding: 15px;
-            border-radius: 15px 15px 15px 0;
-            max-width: 90%;
-            border: 1px solid #555;
-            margin-bottom: 10px;
+        /* Estilo de mensaje de sistema (no parece un botón ni un input) */
+        .system-message {
+            text-align: center;
+            padding: 20px;
+            border: 1px dashed #555;
+            border-radius: 10px;
+            background-color: rgba(255,255,255,0.05);
         }
 
-        #statusText { color: #aaa; font-style: italic; font-size: 0.9rem; }
-        #answerText { color: #10a37f; font-weight: bold; font-size: 1.2rem; display: none; }
+        #statusText { 
+            color: #999; 
+            font-size: 1.1rem;
+            line-height: 1.4;
+        }
 
-        /* Input - FIJO ABAJO */
+        #answerText { 
+            color: #10a37f; 
+            font-weight: bold; 
+            font-size: 1.8rem; 
+            display: none; 
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        /* Input FIJO ABAJO */
         .input-area {
             padding: 20px;
             background-color: #252525;
             border-top: 1px solid #444;
             display: flex;
             gap: 8px;
-            flex-shrink: 0; /* Prohibido que desaparezca */
+            flex-shrink: 0;
         }
 
         input[type="text"] {
             flex: 1;
-            padding: 12px 15px;
-            border-radius: 20px;
-            border: 1px solid #555;
+            padding: 15px;
+            border-radius: 25px;
+            border: 2px solid #10a37f; /* Color llamativo para que sepa que AQUÍ se escribe */
             background-color: #3a3a3a;
             color: white;
             font-size: 1rem;
@@ -108,8 +120,8 @@
             background-color: #10a37f;
             color: white;
             border: none;
-            padding: 0 15px;
-            border-radius: 20px;
+            padding: 0 20px;
+            border-radius: 25px;
             cursor: pointer;
             font-weight: bold;
         }
@@ -123,18 +135,18 @@
                 <img src="chavgpt1.jpg" alt="ChavGPT Logo" class="logo-image">
             </div>
             <h1>ChavGPT</h1>
-            <p class="tagline">La IA que siempre tiene razón, pero no yerba.</p>
+            <p class="tagline">Infalible. Indiscutible. Único.</p>
         </div>
 
         <div class="chat-area" id="chatArea">
-            <div class="response-bubble">
-                <p id="statusText">Pregúntame lo que quieras...</p>
+            <div class="system-message">
+                <p id="statusText">Preguntame lo que quieras, pero no me pidas yerba</p>
                 <p id="answerText">Correcto.</p>
             </div>
         </div>
 
         <form class="input-area" id="mainForm">
-            <input type="text" id="userInput" placeholder="Escribe aquí..." required autocomplete="off">
+            <input type="text" id="userInput" placeholder="Escribe tu pregunta aquí..." required autocomplete="off">
             <button type="submit">Enviar</button>
         </form>
     </div>
@@ -147,9 +159,11 @@
 
         form.addEventListener('submit', (e) => {
             e.preventDefault();
+            
+            // Animación de carga
             answer.style.display = "none";
             status.style.display = "block";
-            status.innerHTML = "<em>Analizando consulta...</em>";
+            status.innerHTML = "<em>Analizando tu brillante planteo...</em>";
 
             setTimeout(() => {
                 status.style.display = "none";
