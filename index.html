@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ChavGPT - Inteligencia Artificial</title>
     <style>
-        /* Estilos Base y Reset */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -13,149 +12,106 @@
         }
 
         body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: #1a1a1a; /* Fondo más oscuro estilo IA */
+            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+            background-color: #1a1a1a;
             color: #ececf1;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            height: 100dvh; /* Usa dynamic viewport height para móviles */
             width: 100vw;
-            overflow: hidden; /* Evita scroll si la imagen es grande */
-            padding: 20px;
-        }
-
-        /* Contenedor Principal */
-        .app-container {
-            background-color: #2d2d2d;
-            border-radius: 20px;
-            width: 100%;
-            max-width: 420px; /* Tamaño máximo tipo celular */
-            height: 90vh; /* Alto máximo */
-            max-height: 700px;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            border: 1px solid #444;
             overflow: hidden;
         }
 
-        /* Sección Superior: Logo y Título */
-        .header {
-            padding: 20px;
-            text-align: center;
-            border-bottom: 1px solid #444;
-            background-color: #252525;
-            flex-shrink: 0; /* No se achica */
+        .app-container {
+            background-color: #2d2d2d;
+            width: 100%;
+            max-width: 450px;
+            height: 100%; /* Ocupa todo el alto en móvil */
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        /* FORZAR REDIMENSIÓN DE LA IMAGEN AQUÍ */
+        /* Header */
+        .header {
+            padding: 15px;
+            text-align: center;
+            background-color: #252525;
+            border-bottom: 1px solid #444;
+            flex-shrink: 0;
+        }
+
         .logo-wrapper {
-            width: 120px; /* Ancho fijo y controlado */
-            height: 120px; /* Alto fijo y controlado */
-            margin: 0 auto 15px auto;
-            border-radius: 50%; /* Hace el contenedor circular */
-            overflow: hidden; /* Corta lo que sobre de la imagen */
-            border: 3px solid #10a37f;
-            box-shadow: 0 4px 10px rgba(16, 163, 127, 0.3);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: white; /* Fondo para que resalte */
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 10px auto;
+            border-radius: 15px; /* Cuadrado redondeado para que se lea el texto de la imagen */
+            overflow: hidden;
+            border: 2px solid #10a37f;
+            background-color: white;
         }
 
         .logo-image {
-            /* Forzar a la imagen a llenar el círculo */
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Ajuste perfecto sin deformar */
-            object-position: center top; /* Centrar en la cara */
+            object-fit: contain; /* Para que no se corte el texto "ChavGPT Correcto" */
         }
 
-        h1 {
-            font-size: 1.6rem;
-            color: white;
-            font-weight: 700;
-        }
+        h1 { font-size: 1.5rem; color: white; }
+        .tagline { font-size: 0.8rem; color: #9ea1a6; }
 
-        .tagline {
-            font-size: 0.8rem;
-            color: #9ea1a6;
-            margin-top: 2px;
-        }
-
-        /* Sección Central: Chat */
+        /* Área de Chat - Autoajustable */
         .chat-area {
-            flex-grow: 1; /* Ocupa el espacio disponible */
+            flex: 1; /* Esto hace que ocupe TODO el espacio sobrante */
             padding: 20px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            overflow-y: auto; /* Scroll interno si la respuesta fuera larga */
+            justify-content: flex-start;
+            overflow-y: auto;
         }
 
         .response-bubble {
             background-color: #3e3e3e;
-            padding: 15px 20px;
-            border-radius: 15px 15px 15px 0; /* Estilo globo de chat */
-            max-width: 85%;
-            align-self: flex-start;
-            border: 1px solid #555;
-        }
-
-        #statusText {
-            color: #888;
-            font-style: italic;
-            font-size: 0.9rem;
-        }
-
-        #answerText {
-            color: #10a37f; /* Color verde IA */
-            font-weight: bold;
-            font-size: 1.3rem;
-            display: none;
-        }
-
-        /* Sección Inferior: Input */
-        .input-area {
             padding: 15px;
+            border-radius: 15px 15px 15px 0;
+            max-width: 90%;
+            border: 1px solid #555;
+            margin-bottom: 10px;
+        }
+
+        #statusText { color: #aaa; font-style: italic; font-size: 0.9rem; }
+        #answerText { color: #10a37f; font-weight: bold; font-size: 1.2rem; display: none; }
+
+        /* Input - FIJO ABAJO */
+        .input-area {
+            padding: 20px;
             background-color: #252525;
             border-top: 1px solid #444;
-            flex-shrink: 0;
             display: flex;
-            gap: 10px;
+            gap: 8px;
+            flex-shrink: 0; /* Prohibido que desaparezca */
         }
 
         input[type="text"] {
-            flex-grow: 1;
+            flex: 1;
             padding: 12px 15px;
-            border-radius: 25px;
+            border-radius: 20px;
             border: 1px solid #555;
             background-color: #3a3a3a;
             color: white;
             font-size: 1rem;
             outline: none;
-            transition: border-color 0.2s;
-        }
-
-        input[type="text"]:focus {
-            border-color: #10a37f;
         }
 
         button {
             background-color: #10a37f;
             color: white;
             border: none;
-            padding: 0 20px;
-            border-radius: 25px;
+            padding: 0 15px;
+            border-radius: 20px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 0.9rem;
-            transition: background-color 0.2s;
-        }
-
-        button:hover {
-            background-color: #1a7f64;
         }
     </style>
 </head>
@@ -167,18 +123,18 @@
                 <img src="chavgpt1.jpg" alt="ChavGPT Logo" class="logo-image">
             </div>
             <h1>ChavGPT</h1>
-            <p class="tagline">La IA que siemre tiene razón, pero no yerba.</p>
+            <p class="tagline">La IA que siempre tiene razón, pero no yerba.</p>
         </div>
 
         <div class="chat-area" id="chatArea">
             <div class="response-bubble">
-                <p id="statusText">Pregúntame lo que quieras y te daré la respuesta definitiva...</p>
+                <p id="statusText">Pregúntame lo que quieras...</p>
                 <p id="answerText">Correcto.</p>
             </div>
         </div>
 
         <form class="input-area" id="mainForm">
-            <input type="text" id="userInput" placeholder="Escribe tu consulta..." required autocomplete="off">
+            <input type="text" id="userInput" placeholder="Escribe aquí..." required autocomplete="off">
             <button type="submit">Enviar</button>
         </form>
     </div>
@@ -191,22 +147,16 @@
 
         form.addEventListener('submit', (e) => {
             e.preventDefault();
-            
-            // Efecto de carga
             answer.style.display = "none";
             status.style.display = "block";
-            status.innerHTML = "<em>Procesando la complejidad de tu pregunta...</em>";
+            status.innerHTML = "<em>Analizando consulta...</em>";
 
-            // Limpiar input y responder tras breve retraso
             setTimeout(() => {
                 status.style.display = "none";
                 answer.style.display = "block";
                 input.value = "";
-                // Scroll al final (aunque aquí no se nota mucho)
-                document.getElementById('chatArea').scrollTop = document.getElementById('chatArea').scrollHeight;
-            }, 900);
+            }, 800);
         });
     </script>
-
 </body>
 </html>
