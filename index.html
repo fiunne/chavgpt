@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChavGPT - Inteligencia Artificial</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #212121;
+            color: #ececf1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+            width: 90%;
+            max-width: 600px;
+        }
+
+        .logo {
+            width: 250px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .chat-box {
+            background-color: #2f2f2f;
+            border-radius: 10px;
+            padding: 20px;
+            min-height: 100px;
+            margin-bottom: 20px;
+            text-align: left;
+            border: 1px solid #444;
+        }
+
+        .response-text {
+            color: #10a37f; /* Color verde característico de IA */
+            font-weight: bold;
+            font-size: 1.2rem;
+            display: none; /* Oculto al inicio */
+        }
+
+        .input-area {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #555;
+            background-color: #353541;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        button {
+            position: absolute;
+            right: 10px;
+            background-color: #10a37f;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #1a7f64;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <img src="chavgpt1.jpg" alt="ChavGPT Logo" class="logo">
+    <h1>ChavGPT</h1>
+    <p>Pregunta lo que quieras...</p>
+
+    <div class="chat-box" id="chatBox">
+        <div id="placeholder">Esperando tu consulta...</div>
+        <div id="responseText" class="response-text"></div>
+    </div>
+
+    <form class="input-area" id="chavForm">
+        <input type="text" id="userInput" placeholder="Escribe aquí..." autocomplete="off">
+        <button type="submit">Enviar</button>
+    </form>
+</div>
+
+<script>
+    const form = document.getElementById('chavForm');
+    const input = document.getElementById('userInput');
+    const responseText = document.getElementById('responseText');
+    const placeholder = document.getElementById('placeholder');
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        if (input.value.trim() !== "") {
+            // Limpiar input y mostrar "pensando" un segundo para darle realismo
+            placeholder.innerText = "ChavGPT está analizando tu compleja consulta...";
+            responseText.style.display = "none";
+            
+            setTimeout(() => {
+                placeholder.style.display = "none";
+                responseText.innerText = "Correcto.";
+                responseText.style.display = "block";
+                input.value = "";
+            }, 800);
+        }
+    });
+</script>
+
+</body>
+</html>
