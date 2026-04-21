@@ -15,70 +15,99 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
+            overflow: hidden;
         }
 
         .container {
             text-align: center;
             width: 90%;
-            max-width: 600px;
+            max-width: 500px;
+        }
+
+        .logo-container {
+            margin-bottom: 20px;
         }
 
         .logo {
-            width: 250px;
-            border-radius: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            width: 100%;
+            max-width: 300px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+            border: 2px solid #444;
         }
 
         h1 {
-            font-size: 2rem;
-            margin-bottom: 10px;
-            color: #fff;
+            font-size: 2.2rem;
+            margin-bottom: 5px;
+            color: #ffffff;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            color: #9ea1a6;
+            margin-bottom: 30px;
+            font-size: 0.9rem;
         }
 
         .chat-box {
             background-color: #2f2f2f;
-            border-radius: 10px;
-            padding: 20px;
-            min-height: 100px;
+            border-radius: 12px;
+            padding: 25px;
+            min-height: 80px;
             margin-bottom: 20px;
             text-align: left;
             border: 1px solid #444;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .response-text {
-            color: #10a37f; /* Color verde característico de IA */
-            font-weight: bold;
-            font-size: 1.2rem;
-            display: none; /* Oculto al inicio */
+            color: #10a37f;
+            font-weight: 600;
+            font-size: 1.4rem;
+            display: none;
+        }
+
+        .waiting {
+            color: #666;
+            font-style: italic;
         }
 
         .input-area {
             position: relative;
-            display: flex;
-            align-items: center;
+            width: 100%;
         }
 
         input[type="text"] {
             width: 100%;
-            padding: 15px;
-            border-radius: 8px;
+            padding: 16px 50px 16px 16px;
+            border-radius: 12px;
             border: 1px solid #555;
             background-color: #353541;
             color: white;
             font-size: 1rem;
+            box-sizing: border-box;
             outline: none;
+            transition: border 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #10a37f;
         }
 
         button {
             position: absolute;
             right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
             background-color: #10a37f;
             color: white;
             border: none;
             padding: 8px 12px;
-            border-radius: 5px;
+            border-radius: 7px;
             cursor: pointer;
+            font-weight: bold;
         }
 
         button:hover {
@@ -89,42 +118,43 @@
 <body>
 
 <div class="container">
-    <img src="chavgpt1.jpg" alt="ChavGPT Logo" class="logo">
+    <div class="logo-container">
+        <img src="chavgpt1.jpg" alt="ChavGPT Logo" class="logo">
+    </div>
+    
     <h1>ChavGPT</h1>
-    <p>Pregunta lo que quieras...</p>
+    <p class="subtitle">La IA que siempre tiene la razón</p>
 
-    <div class="chat-box" id="chatBox">
-        <div id="placeholder">Esperando tu consulta...</div>
-        <div id="responseText" class="response-text"></div>
+    <div class="chat-box" id="chatContainer">
+        <div id="statusText" class="waiting">Haz tu pregunta...</div>
+        <div id="answer" class="response-text">Correcto.</div>
     </div>
 
-    <form class="input-area" id="chavForm">
-        <input type="text" id="userInput" placeholder="Escribe aquí..." autocomplete="off">
+    <form class="input-area" id="qaForm">
+        <input type="text" id="userInput" placeholder="Escribe tu duda aquí..." required autocomplete="off">
         <button type="submit">Enviar</button>
     </form>
 </div>
 
 <script>
-    const form = document.getElementById('chavForm');
+    const form = document.getElementById('qaForm');
     const input = document.getElementById('userInput');
-    const responseText = document.getElementById('responseText');
-    const placeholder = document.getElementById('placeholder');
+    const answer = document.getElementById('answer');
+    const statusText = document.getElementById('statusText');
 
     form.addEventListener('submit', (e) => {
         e.preventDefault();
         
-        if (input.value.trim() !== "") {
-            // Limpiar input y mostrar "pensando" un segundo para darle realismo
-            placeholder.innerText = "ChavGPT está analizando tu compleja consulta...";
-            responseText.style.display = "none";
-            
-            setTimeout(() => {
-                placeholder.style.display = "none";
-                responseText.innerText = "Correcto.";
-                responseText.style.display = "block";
-                input.value = "";
-            }, 800);
-        }
+        // Efecto visual de "pensando"
+        answer.style.display = "none";
+        statusText.style.display = "block";
+        statusText.innerText = "Procesando respuesta lógica...";
+
+        setTimeout(() => {
+            statusText.style.display = "none";
+            answer.style.display = "block";
+            input.value = ""; // Limpiar el input
+        }, 1000);
     });
 </script>
 
